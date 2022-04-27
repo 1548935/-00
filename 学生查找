@@ -1,0 +1,147 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+struct Student
+{
+	int stuId;
+	int stuAge;
+	char stuName;
+	struct Student *next;
+};
+struct Student *headp=NULL;
+struct Student *tailp=NULL;
+void printStudent(struct Student *curp)
+{
+	printf("学号:%d 年龄:%d 姓名:%s\n",curp->stuId,curp->stuAge,curp->stuName);
+}
+void printLinkedList(struct Student *headp)
+{
+	while(headp!=NULL)
+	{
+	  printStudent(headp);
+	  headp=headp->next;
+    }
+}
+void addStudent()
+{
+	struct Student *nodep=(struct Student*)malloc(sizeof(struct Student));
+	printf("请输入学号：");
+	scanf("%d",&nodep->stuId);
+	printf("请输入年龄");
+	scanf("%d",&nodep->stuAge);
+	printf("请输入姓名");
+	scanf("%s",&nodep->stuName);
+	nodep->next=NULL;
+	if(headp==NULL)
+	{
+		headp==nodep;
+		tailp=nodep;
+	}
+	else
+	{
+		tailp->next=nodep;
+		tailp=nodep;
+	}
+	printf("添加成功\n"); 
+} 
+void findStudent()
+{
+	printf("请输入想要查找的学生的学号：");
+	int id;
+	scanf("%d",&id);
+	struct Student *curp=headp;
+	int flag=0;
+	while(curp!=NULL)
+	{
+		if(curp->stuId)
+		{
+			printStudent(curp);
+			flag=1;
+			break;
+		}
+		else
+		{
+			curp=curp->next;
+		}
+	}
+	if(flag==0)
+	{
+		printf("没有此学生");
+	}
+}
+void printALLStudent()
+{
+	if(headp==NULL)
+	{
+		printf("当然没有此学生\n");
+	}
+	else
+	{
+		printLinkedList(headp);
+	}
+}
+void deleteStudent()
+{
+	printf("请输入想要删除的学生学号："); 
+	int id;
+	scanf("%d",&id);
+	struct Student *curp=headp;
+	if(curp->stuId==id)
+	{
+		headp=headp->next;
+		free(curp);
+		curp=NULL;
+	}
+	struct Student *prep=curp;
+	curp=curp->next;
+	while(curp!=NULL)
+	{
+		if(curp->stuId==id)
+		{
+			struct Student *next=curp->next;
+			prep->next=next;
+			free(curp);
+			printf("已删除了此人\n");
+			break;
+		}
+		else
+		{
+			prep=curp;
+			curp=curp->next;
+		}
+	}
+	printf("该学生不存在，无法删除\n");
+}
+int main()
+{
+	printf("欢迎使用简易学生信息管理系统\n");
+	printf("按1添加学生\n");
+	printf("按2查询学生\n");
+	printf("按3打印所有学生\n");
+	printf("按4删除学生\n");
+	printf("按5退出程序\n");
+	while(1)
+	{
+		char c;
+		scanf("%c",&c);
+		switch(c)
+		{
+			case'1':
+		      addStudent();
+		      break;
+		    case'2':
+		      findStudent();
+			  break;
+			case'3':
+			  printALLStudent();
+			  break;
+			case'4':
+			  deleteStudent();
+			  break;
+			case'5':
+			  exit(0);
+			default:break;	
+		}
+	} 
+	 return 0;
+}
